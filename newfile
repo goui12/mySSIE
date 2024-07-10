@@ -1,0 +1,170 @@
+private void generateSafetySuggestion() {
+    StringBuilder query = new StringBuilder("Chat GPT, how can I be safer on the job with the following hazards:");
+
+    boolean atLeastOneChecked = false;
+
+    List<String> checkedHazards = new ArrayList<>();
+
+    // Check each checkbox and add its text to the list if checked
+    if (cbConfined.isSelected()) {
+        checkedHazards.add(cbConfined.getText());
+        atLeastOneChecked = true;
+    }
+
+    if (cbCorrections.isSelected()) {
+        checkedHazards.add(cbCorrections.getText());
+        atLeastOneChecked = true;
+    }
+
+    if (cbCut.isSelected()) {
+        checkedHazards.add(cbCut.getText());
+        atLeastOneChecked = true;
+    }
+
+    if (cbDriving.isSelected()) {
+        checkedHazards.add(cbDriving.getText());
+        atLeastOneChecked = true;
+    }
+
+    if (cbDust.isSelected()) {
+        checkedHazards.add(cbDust.getText());
+        atLeastOneChecked = true;
+    }
+
+    if (cbErgonomics.isSelected()) {
+        checkedHazards.add(cbErgonomics.getText());
+        atLeastOneChecked = true;
+    }
+
+    if (cbElectrical.isSelected()) {
+        checkedHazards.add(cbElectrical.getText());
+        atLeastOneChecked = true;
+    }
+
+    if (cbEyeStrain.isSelected()) {
+        checkedHazards.add(cbEyeStrain.getText());
+        atLeastOneChecked = true;
+    }
+
+    if (cbLifts.isSelected()) {
+        checkedHazards.add(cbLifts.getText());
+        atLeastOneChecked = true;
+    }
+
+    if (cbLadders.isSelected()) {
+        checkedHazards.add(cbLadders.getText());
+        atLeastOneChecked = true;
+    }
+
+    if (cbRoofs.isSelected()) {
+        checkedHazards.add(cbRoofs.getText());
+        atLeastOneChecked = true;
+    }
+
+    if (cbFlying.isSelected()) {
+        checkedHazards.add(cbFlying.getText());
+        atLeastOneChecked = true;
+    }
+
+    if (cbMetal.isSelected()) {
+        checkedHazards.add(cbMetal.getText());
+        atLeastOneChecked = true;
+    }
+
+    if (cbHand.isSelected()) {
+        checkedHazards.add(cbHand.getText());
+        atLeastOneChecked = true;
+    }
+
+    if (cbHousekeeping.isSelected()) {
+        checkedHazards.add(cbHousekeeping.getText());
+        atLeastOneChecked = true;
+    }
+
+    if (cbInfection.isSelected()) {
+        checkedHazards.add(cbInfection.getText());
+        atLeastOneChecked = true;
+    }
+
+    if (cbLighting.isSelected()) {
+        checkedHazards.add(cbLighting.getText());
+        atLeastOneChecked = true;
+    }
+
+    if (cbHeavy.isSelected()) {
+        checkedHazards.add(cbHeavy.getText());
+        atLeastOneChecked = true;
+    }
+
+    if (cbRepeat.isSelected()) {
+        checkedHazards.add(cbRepeat.getText());
+        atLeastOneChecked = true;
+    }
+
+    if (cbNoise.isSelected()) {
+        checkedHazards.add(cbNoise.getText());
+        atLeastOneChecked = true;
+    }
+
+    if (cbNewSite.isSelected()) {
+        checkedHazards.add(cbNewSite.getText());
+        atLeastOneChecked = true;
+    }
+
+    if (cbPowerTools.isSelected()) {
+        checkedHazards.add(cbPowerTools.getText());
+        atLeastOneChecked = true;
+    }
+
+    if (cbSlip.isSelected()) {
+        checkedHazards.add(cbSlip.getText());
+        atLeastOneChecked = true;
+    }
+
+    if (cbTrench.isSelected()) {
+        checkedHazards.add(cbTrench.getText());
+        atLeastOneChecked = true;
+    }
+
+    if (cbHot.isSelected()) {
+        checkedHazards.add(cbHot.getText());
+        atLeastOneChecked = true;
+    }
+
+    if (cbCold.isSelected()) {
+        checkedHazards.add(cbCold.getText());
+        atLeastOneChecked = true;
+    }
+
+    if (cbStorm.isSelected()) {
+        checkedHazards.add(cbStorm.getText());
+        atLeastOneChecked = true;
+    }
+
+    if (cbInsects.isSelected()) {
+        checkedHazards.add(cbInsects.getText());
+        atLeastOneChecked = true;
+    }
+
+    if (cbAlone.isSelected()) {
+        checkedHazards.add(cbAlone.getText());
+        atLeastOneChecked = true;
+    }
+
+    if (cbTrip.isSelected()) {
+        checkedHazards.add(cbTrip.getText());
+        atLeastOneChecked = true;
+    }
+
+        //ChatGPT interaction class
+        ChatGPTClient chatGPTClient = new ChatGPTClient();
+        String inputPrompt = "Chat GPT, in under " + /* insert code to grab wordcount from XML */ "20" + " words, how can I be safer on the job with the following hazards:" +
+                (atLeastOneChecked ? " " : " (none)") +
+                String.join(", ", checkedHazards);
+
+        ChatGPTClient.askChatGPT(inputPrompt, txaHazard);
+
+        // Handle the response as needed
+        //System.out.println("ChatGPT response: " + response);
+    }
+}

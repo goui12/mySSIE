@@ -1,0 +1,91 @@
+package mysiexperience;
+
+import java.io.BufferedReader;
+import java.io.DataOutputStream;
+import java.io.InputStreamReader;
+import java.io.StringReader;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import javax.swing.JTextArea;
+import org.json.JSONArray;
+import org.json.JSONObject;
+
+public class ChatGPTClient {
+    private static final String API_KEY = "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";
+    private static final String API_ENDPOINT = "https://api.openai.com/v1/chat/completions";
+    private static final String MODEL_NAME = "gpt-3.5-turbo-0125";
+    
+    public static void askChatGPT(String input, JTextArea txaHazard) {
+        try {
+            // Construct the API request
+            URL url = new URL(API_ENDPOINT);
+            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+            connection.setRequestMethod("POST");
+            connection.setRequestProperty("Content-Type", "application/json");
+            connection.setRequestProperty("Authorization", "Bearer " + API_KEY);
+            connection.setDoOutput(true);
+
+            // Build the request body
+            String requestBody = "{\"messages\": [{\"role\": \"system\", \"content\": \"You are a helpful assistant.\"}, {\"role\": \"user\", \"content\": \"" + input + "\"}], \"max_tokens\": 150, \"model\": \"" + MODEL_NAME + "\"}";
+            try (DataOutputStream outputStream = new DataOutputStream(connection.getOutputStream())) {
+                outputStream.writeBytes(requestBody);
+                outputStream.flush();
+            }
+
+            // Get the API response
+            int responseCode = connection.getResponseCode();
+
+            if (responseCode == HttpURLConnection.HTTP_OK) {
+                try (BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream()))) {
+                    StringBuilder response = new StringBuilder();
+                    String line;
+                    while ((line = reader.readLine()) != null) {
+                        response.append(line);
+                    }
+
+                    // Extract the assistant's response
+                    String assistantResponse = extractAssistantResponse(response.toString());
+
+                    // Update txaHazard with the assistant's response
+                    txaHazard.setText(assistantResponse);
+                }
+            } else {
+                // Handle HTTP error
+                System.out.println("HTTP error: " + responseCode);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    // Helper method to extract assistant's response content from the API response
+private static String extractAssistantResponse(String apiResponse) {
+    try {
+        // Parse the JSON response
+        JSONObject jsonResponse = new JSONObject(apiResponse);
+
+        // Extract the content of the assistant's response from the "choices" array
+        JSONArray choicesArray = jsonResponse.getJSONArray("choices");
+
+        if (choicesArray.length() > 0) {
+            JSONObject assistantChoice = choicesArray.getJSONObject(0);
+
+            // Check if the "message" object exists
+            if (assistantChoice.has("message")) {
+                JSONObject messageObject = assistantChoice.getJSONObject("message");
+
+                // Check if the "content" key exists
+                if (messageObject.has("content")) {
+                    String assistantResponse = messageObject.getString("content").trim();
+                    return assistantResponse;
+                }
+            }
+        }
+
+        return "No valid 'content' found in the response.";
+    } catch (Exception e) {
+        e.printStackTrace();
+        return "Error extracting response.";
+    }
+}
+}
